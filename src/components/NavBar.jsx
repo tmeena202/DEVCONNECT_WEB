@@ -15,7 +15,9 @@ const NavBar = () => {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
       dispatch(removeUser());
       return navigate("/login");
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -23,7 +25,7 @@ const NavBar = () => {
       {/* Logo */}
       <div className="flex-1">
         <Link to="/" className="text-2xl font-bold tracking-wide text-primary">
-          DEVCONNECT
+          DEV.CONNECT
         </Link>
       </div>
 
@@ -63,14 +65,25 @@ const NavBar = () => {
                   to="/profile"
                   className="rounded-lg hover:bg-primary hover:text-white"
                 >
-                  👤 Profile
+                  Profile
                 </Link>
               </li>
 
               <li>
-                <a className="rounded-lg hover:bg-primary hover:text-white">
-                  ⚙️ Settings
-                </a>
+                <Link
+                  to="/connections"
+                  className="rounded-lg hover:bg-primary hover:text-white"
+                >
+                  Connections
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/requests"
+                  className="rounded-lg hover:bg-primary hover:text-white"
+                >
+                  Requests
+                </Link>
               </li>
 
               <li>
@@ -78,7 +91,7 @@ const NavBar = () => {
                   onClick={handleLogout}
                   className="rounded-lg text-red-400 hover:bg-red-500 hover:text-white"
                 >
-                  🚪 Logout
+                  Logout
                 </a>
               </li>
             </ul>
