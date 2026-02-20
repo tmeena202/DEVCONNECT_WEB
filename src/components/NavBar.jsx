@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
@@ -9,6 +9,8 @@ const NavBar = () => {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef();
 
   const handleLogout = async () => {
     try {
@@ -20,85 +22,84 @@ const NavBar = () => {
     }
   };
 
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
   return (
-    <div className="navbar bg-base-300 px-6 shadow-md">
-      {/* Logo */}
-      <div className="flex-1">
-        <Link to="/" className="text-2xl font-bold tracking-wide text-primary">
-          DEV.CONNECT
+    <header className="sticky top-0 z-40 w-full bg-[#111827] border-b border-[#1f2937]">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between text-gray-200">
+        <Link to="/" className="text-lg font-semibold tracking-tight">
+          DEV<span className="text-sky-400">.</span>CONNECT
         </Link>
-      </div>
 
-      {/* Right Side */}
-      {user && (
-        <div className="flex items-center gap-4">
-          {/* Welcome Text */}
-          <p className="hidden sm:block font-medium text-gray-200">
-            Welcome,{" "}
-            <span className="font-semibold text-white">{user.firstName}</span>
-          </p>
+        {user && (
+          <div className="flex items-center gap-6 relative" ref={dropdownRef}>
+            <p className="hidden md:block text-sm text-gray-400">
+              Welcome,{" "}
+              <span className="text-gray-100 font-medium">
+                {user.firstName}
+              </span>
+            </p>
 
-          {/* Dropdown */}
-          <div className="dropdown dropdown-end">
-            {/* Avatar Button */}
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
+            <button
+              onClick={() => setOpen(!open)}
+              className="relative h-10 w-10 rounded-full overflow-hidden"
             >
-              <div className="w-11 rounded-full ring-2 ring-green-400/50 transition duration-300  hover:ring-green-400 hover:shadow-lg hover:shadow-green-500/40">
-                <img
-                  src={user.photoUrl}
-                  alt="User Avatar"
-                  className="rounded-full object-cover"
-                />
-              </div>
-            </div>
+              <img
+                src={user.photoUrl}
+                alt="User Avatar"
+                className="h-full w-full object-cover"
+              />
+              <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-sky-500 rounded-full border-2 border-[#111827]" />
+            </button>
 
-            {/* Dropdown Menu */}
-            <ul
-              tabIndex={0}
-              className="menu dropdown-content mt-3 w-52 rounded-xl bg-base-200 p-3 shadow-xl"
-            >
-              <li>
+            {open && (
+              <div className="absolute right-0 top-14 w-56 bg-[#1f2937] border border-[#2a3441] rounded-lg shadow-lg py-2 z-50">
                 <Link
                   to="/profile"
-                  className="rounded-lg hover:bg-primary hover:text-white"
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-2 text-sm hover:bg-[#111827] transition"
                 >
                   Profile
                 </Link>
-              </li>
 
-              <li>
                 <Link
                   to="/connections"
-                  className="rounded-lg hover:bg-primary hover:text-white"
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-2 text-sm hover:bg-[#111827] transition"
                 >
                   Connections
                 </Link>
-              </li>
-              <li>
+
                 <Link
                   to="/requests"
-                  className="rounded-lg hover:bg-primary hover:text-white"
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-2 text-sm hover:bg-[#111827] transition"
                 >
                   Requests
                 </Link>
-              </li>
 
-              <li>
-                <a
+                <div className="border-t border-[#2a3441] my-2" />
+
+                <button
                   onClick={handleLogout}
-                  className="rounded-lg text-red-400 hover:bg-red-500 hover:text-white"
+                  className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 transition"
                 >
                   Logout
-                </a>
-              </li>
-            </ul>
+                </button>
+              </div>
+            )}
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </header>
   );
 };
 

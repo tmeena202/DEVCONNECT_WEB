@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
   const dispatch = useDispatch();
+
   const fetchConnections = async () => {
     try {
       const res = await axios.get(BASE_URL + "/user/connections", {
@@ -15,7 +16,6 @@ const Connections = () => {
       });
       dispatch(addConnections(res.data.data));
     } catch (err) {
-      // Handle Error Case
       console.error(err);
     }
   };
@@ -25,17 +25,19 @@ const Connections = () => {
   }, []);
 
   if (!connections) return;
-
-  if (connections.length === 0) return <h1> No Connections Found</h1>;
+  if (connections.length === 0)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-400 text-xl">
+        No Connections Found
+      </div>
+    );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-950 py-12 px-4">
-      {/* Page Heading */}
-      <h1 className="text-center text-4xl font-extrabold text-white mb-12 tracking-wide">
-        Your Connections 🌐
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-black py-12 px-4">
+      <h1 className="text-center text-4xl font-bold text-slate-100 mb-12">
+        Your Connections
       </h1>
 
-      {/* Connections List */}
       <div className="max-w-4xl mx-auto space-y-6">
         {connections.map((connection) => {
           const { _id, firstName, lastName, photoUrl, age, gender, about } =
@@ -44,44 +46,38 @@ const Connections = () => {
           return (
             <div
               key={_id}
-              className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 rounded-2xl 
-            bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl 
-            hover:shadow-2xl transition-all duration-300"
+              className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 
+              rounded-2xl bg-slate-800 border border-slate-700 shadow-lg
+              hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
-              {/* Profile Image */}
-              <div className="flex-shrink-0">
-                <img
-                  alt="photo"
-                  src={photoUrl}
-                  className="w-20 h-20 rounded-full object-cover border-2 border-indigo-400 shadow-md"
-                />
-              </div>
+              <img
+                alt="photo"
+                src={photoUrl}
+                className="w-20 h-20 rounded-full object-cover border-2 border-teal-500"
+              />
 
-              {/* User Info */}
               <div className="flex-1 text-center sm:text-left">
-                <h2 className="text-2xl font-bold text-white">
+                <h2 className="text-2xl font-bold text-slate-100">
                   {firstName} {lastName}
                 </h2>
 
                 {age && gender && (
-                  <p className="text-gray-300 text-sm mt-1">
+                  <p className="text-slate-400 text-sm mt-1">
                     {age} • {gender}
                   </p>
                 )}
 
-                <p className="text-gray-400 mt-2 text-sm leading-relaxed line-clamp-2">
+                <p className="text-slate-500 mt-2 text-sm leading-relaxed line-clamp-2">
                   {about}
                 </p>
               </div>
 
-              {/* Chat Button */}
               <Link to={"/chat/" + _id}>
                 <button
-                  className="px-6 py-2 rounded-xl font-semibold text-white 
-                bg-indigo-500 hover:bg-indigo-600 transition duration-300 
-                shadow-lg hover:shadow-indigo-500/50"
+                  className="px-6 py-2 rounded-lg font-semibold text-white 
+                  bg-teal-600 hover:bg-teal-700 transition duration-300 shadow-md"
                 >
-                  💬 Chat
+                  Chat
                 </button>
               </Link>
             </div>
@@ -91,4 +87,5 @@ const Connections = () => {
     </div>
   );
 };
+
 export default Connections;

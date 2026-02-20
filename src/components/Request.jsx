@@ -10,7 +10,7 @@ const Requests = () => {
 
   const reviewRequest = async (status, _id) => {
     try {
-      axios.post(
+      await axios.post(
         BASE_URL + "/request/review/" + status + "/" + _id,
         {},
         { withCredentials: true },
@@ -26,7 +26,6 @@ const Requests = () => {
       const res = await axios.get(BASE_URL + "/user/requests/received", {
         withCredentials: true,
       });
-
       dispatch(addRequests(res.data.data));
     } catch (err) {
       console.log(err);
@@ -40,13 +39,17 @@ const Requests = () => {
   if (!requests) return;
 
   if (requests.length === 0)
-    return <h1 className="flex justify-center my-10"> No Requests Found</h1>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-400 text-xl">
+        No Requests Found
+      </div>
+    );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-950 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-black py-12 px-4">
       {/* Page Title */}
-      <h1 className="text-center text-4xl font-extrabold text-white mb-10 tracking-wide">
-        Connection Requests 🤝
+      <h1 className="text-center text-4xl font-bold text-slate-100 mb-12">
+        Connection Requests
       </h1>
 
       {/* Requests List */}
@@ -57,33 +60,31 @@ const Requests = () => {
 
           return (
             <div
-              key={_id}
-              className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 rounded-2xl 
-            bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:shadow-2xl 
-            transition-all duration-300"
+              key={request._id}
+              className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 
+              rounded-2xl bg-slate-800 border border-slate-700 shadow-lg
+              hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               {/* Profile Image */}
-              <div className="flex-shrink-0">
-                <img
-                  alt="photo"
-                  src={photoUrl}
-                  className="w-20 h-20 rounded-full border-2 border-indigo-400 shadow-md"
-                />
-              </div>
+              <img
+                alt="photo"
+                src={photoUrl}
+                className="w-20 h-20 rounded-full object-cover border-2 border-teal-500"
+              />
 
               {/* User Info */}
               <div className="flex-1 text-center sm:text-left">
-                <h2 className="text-2xl font-bold text-white">
+                <h2 className="text-2xl font-bold text-slate-100">
                   {firstName} {lastName}
                 </h2>
 
                 {age && gender && (
-                  <p className="text-gray-300 text-sm mt-1">
+                  <p className="text-slate-400 text-sm mt-1">
                     {age} • {gender}
                   </p>
                 )}
 
-                <p className="text-gray-400 mt-2 text-sm leading-relaxed">
+                <p className="text-slate-500 mt-2 text-sm leading-relaxed line-clamp-2">
                   {about}
                 </p>
               </div>
@@ -92,18 +93,18 @@ const Requests = () => {
               <div className="flex gap-3">
                 <button
                   onClick={() => reviewRequest("rejected", request._id)}
-                  className="px-5 py-2 rounded-xl font-semibold text-white 
-                bg-red-500/80 hover:bg-red-600 transition shadow-md"
+                  className="px-5 py-2 rounded-lg font-semibold text-white 
+                  bg-rose-600 hover:bg-rose-700 transition duration-300 shadow-md"
                 >
-                  Reject ✖
+                  Reject
                 </button>
 
                 <button
                   onClick={() => reviewRequest("accepted", request._id)}
-                  className="px-5 py-2 rounded-xl font-semibold text-white 
-                bg-green-500/80 hover:bg-green-600 transition shadow-md"
+                  className="px-5 py-2 rounded-lg font-semibold text-white 
+                  bg-teal-600 hover:bg-teal-700 transition duration-300 shadow-md"
                 >
-                  Accept ✔
+                  Accept
                 </button>
               </div>
             </div>
@@ -113,4 +114,5 @@ const Requests = () => {
     </div>
   );
 };
+
 export default Requests;
