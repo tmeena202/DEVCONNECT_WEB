@@ -63,6 +63,14 @@ const NavBar = () => {
             {open && (
               <div className="absolute right-0 top-14 w-56 bg-[#1f2937] border border-[#2a3441] rounded-lg shadow-lg py-2 z-50">
                 <Link
+                  to="/"
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-2 text-sm hover:bg-[#111827] transition"
+                >
+                  Feed
+                </Link>
+
+                <Link
                   to="/profile"
                   onClick={() => setOpen(false)}
                   className="block px-4 py-2 text-sm hover:bg-[#111827] transition"

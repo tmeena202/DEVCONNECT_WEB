@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { removeUserFromFeed } from "../utils/feedSlice";
-import { useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 const UserCard = ({ user, isTop }) => {
   const { _id, firstName, lastName, photoUrl, age, gender, about } = user;
