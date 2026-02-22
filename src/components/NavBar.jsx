@@ -5,6 +5,13 @@ import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import { removeUser } from "../utils/userSlice";
 
+const NAV_LINKS = [
+  { to: "/", label: "Feed" },
+  { to: "/profile", label: "Profile" },
+  { to: "/connections", label: "Connections" },
+  { to: "/requests", label: "Requests" },
+];
+
 const NavBar = () => {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
@@ -33,73 +40,69 @@ const NavBar = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#111827] border-b border-[#1f2937]">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between text-gray-200">
-        <Link to="/" className="text-lg font-semibold tracking-tight">
+    <header className="sticky top-0 z-40 w-full bg-[#111111] border-b border-[#1f1f1f]">
+      <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+
+        {/* Brand */}
+        <Link
+          to="/"
+          className="font-mono text-[0.85rem] font-semibold tracking-[0.18em] uppercase text-neutral-100 hover:text-white transition-colors duration-150"
+        >
           DEV<span className="text-sky-400">.</span>CONNECT
         </Link>
 
+        {/* Right side */}
         {user && (
-          <div className="flex items-center gap-6 relative" ref={dropdownRef}>
-            <p className="hidden md:block text-sm text-gray-400">
-              Welcome,{" "}
-              <span className="text-gray-100 font-medium">
-                {user.firstName}
-              </span>
+          <div className="flex items-center gap-5 relative" ref={dropdownRef}>
+
+            {/* Welcome text */}
+            <p className="hidden md:block font-mono text-[0.68rem] tracking-wide text-neutral-600">
+              <span className="text-neutral-500">~/</span>
+              <span className="text-neutral-300 ml-1">{user.firstName}</span>
             </p>
 
+            {/* Avatar button */}
             <button
               onClick={() => setOpen(!open)}
-              className="relative h-10 w-10 rounded-full overflow-hidden"
+              className="relative h-8 w-8 rounded-sm overflow-hidden border border-[#2e2e2e] hover:border-sky-400 transition-colors duration-150 cursor-pointer"
             >
               <img
                 src={user.photoUrl}
                 alt="User Avatar"
                 className="h-full w-full object-cover"
               />
-              <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-sky-500 rounded-full border-2 border-[#111827]" />
+              {/* Online indicator */}
+              <span className="absolute bottom-0 right-0 h-2 w-2 bg-sky-400 rounded-none border border-[#111111]" />
             </button>
 
+            {/* Dropdown */}
             {open && (
-              <div className="absolute right-0 top-14 w-56 bg-[#1f2937] border border-[#2a3441] rounded-lg shadow-lg py-2 z-50">
-                <Link
-                  to="/"
-                  onClick={() => setOpen(false)}
-                  className="block px-4 py-2 text-sm hover:bg-[#111827] transition"
-                >
-                  Feed
-                </Link>
+              <div className="absolute right-0 top-12 w-52 bg-[#111111] border border-[#262626] rounded-sm shadow-2xl shadow-black/60 py-1 z-50">
 
-                <Link
-                  to="/profile"
-                  onClick={() => setOpen(false)}
-                  className="block px-4 py-2 text-sm hover:bg-[#111827] transition"
-                >
-                  Profile
-                </Link>
+                {/* Section label */}
+                <p className="px-4 pt-2 pb-1 font-mono text-[0.6rem] tracking-[0.18em] uppercase text-neutral-700">
+                  Navigate
+                </p>
 
-                <Link
-                  to="/connections"
-                  onClick={() => setOpen(false)}
-                  className="block px-4 py-2 text-sm hover:bg-[#111827] transition"
-                >
-                  Connections
-                </Link>
+                {NAV_LINKS.map(({ to, label }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2 px-4 py-2 font-mono text-[0.73rem] text-neutral-400 hover:text-neutral-100 hover:bg-[#1a1a1a] transition-colors duration-100"
+                  >
+                    <span className="text-sky-600 select-none">›</span>
+                    {label}
+                  </Link>
+                ))}
 
-                <Link
-                  to="/requests"
-                  onClick={() => setOpen(false)}
-                  className="block px-4 py-2 text-sm hover:bg-[#111827] transition"
-                >
-                  Requests
-                </Link>
-
-                <div className="border-t border-[#2a3441] my-2" />
+                <div className="border-t border-[#1f1f1f] my-1.5 mx-3" />
 
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 transition"
+                  className="w-full text-left flex items-center gap-2 px-4 py-2 font-mono text-[0.73rem] text-red-500 hover:text-red-400 hover:bg-[#1a0808] transition-colors duration-100 cursor-pointer"
                 >
+                  <span className="select-none">×</span>
                   Logout
                 </button>
               </div>

@@ -43,86 +43,104 @@ const Login = () => {
     }
   };
 
+  const inputClass =
+    "w-full bg-[#080808] border border-[#262626] rounded-sm px-3 py-2.5 font-mono text-[0.78rem] text-neutral-200 placeholder-neutral-600 outline-none focus:border-sky-400 focus:bg-[#0d0d0d] caret-sky-400 transition-colors duration-150";
+
   return (
-    <div className="min-h-screen flex bg-[#0f172a] text-gray-200">
-      {/* Left Section */}
-      {/* Left Section */}
-      <div className="hidden md:flex w-1/2 bg-[#111827] p-16 flex-col justify-between border-r border-[#1f2937]">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">
+    <div
+      className="min-h-screen flex bg-[#0a0a0a] text-neutral-200"
+      style={{ fontFamily: "'IBM Plex Sans', sans-serif" }}
+    >
+      {/* ── Left Panel ── */}
+      <div className="hidden md:flex w-1/2 flex-col justify-between p-14 bg-[#111111] border-r border-[#1f1f1f] relative overflow-hidden">
+        {/* Grid texture overlay */}
+        <div
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(#1f1f1f 1px, transparent 1px), linear-gradient(90deg, #1f1f1f 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative z-10">
+
+          <h1 className="font-mono text-xl font-semibold tracking-widest text-neutral-100">
             DEV<span className="text-sky-400">.</span>CONNECT
           </h1>
 
-          <p className="text-gray-400 mt-6 max-w-md leading-relaxed text-sm">
+          <p className="mt-5 text-[0.78rem] text-neutral-500 leading-relaxed max-w-sm font-light">
             A focused networking platform built exclusively for developers.
             Discover like-minded engineers, explore opportunities, and build
             meaningful professional connections without distractions.
           </p>
 
-          {/* Feature Points */}
-          <div className="mt-10 space-y-6">
-            <div>
-              <h3 className="text-sm font-semibold text-sky-400">
-                Curated Developer Feed
-              </h3>
-              <p className="text-gray-400 text-xs mt-1">
-                Swipe through developer profiles and connect with engineers who
-                match your interests and skills.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-semibold text-sky-400">
-                Distraction-Free Experience
-              </h3>
-              <p className="text-gray-400 text-xs mt-1">
-                No ads. No noise. Just meaningful tech connections.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-semibold text-sky-400">
-                Built for Speed
-              </h3>
-              <p className="text-gray-400 text-xs mt-1">
-                Optimized with modern technologies for seamless performance and
-                smooth interactions.
-              </p>
-            </div>
+          <div className="mt-10 flex flex-col gap-7">
+            {[
+              {
+                title: "Curated Developer Feed",
+                desc: "Swipe through developer profiles and connect with engineers who match your interests and skills.",
+              },
+              {
+                title: "Distraction-Free Experience",
+                desc: "No ads. No noise. Just meaningful tech connections.",
+              },
+              {
+                title: "Built for Speed",
+                desc: "Optimized with modern technologies for seamless performance and smooth interactions.",
+              },
+            ].map((f) => (
+              <div key={f.title} className="border-l-2 border-[#2e2e2e] pl-4">
+                <p className="font-mono text-[0.67rem] tracking-[0.12em] uppercase text-sky-400 font-medium">
+                  {f.title}
+                </p>
+                <p className="mt-1 text-[0.75rem] text-neutral-500 leading-relaxed font-light">
+                  {f.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
+
+        <p className="relative z-10 font-mono text-[0.62rem] text-neutral-700 tracking-wider">
+          v2.0.1 · © 2025 dev.connect
+        </p>
       </div>
 
-      {/* Right Section */}
-      <div className="flex w-full md:w-1/2 items-center justify-center px-6">
-        <div className="w-full max-w-md bg-[#111827] border border-[#1f2937] rounded-xl p-10 shadow-xl">
-          <h2 className="text-2xl font-semibold mb-2">
+      {/* ── Right Panel ── */}
+      <div className="flex w-full md:w-1/2 items-center justify-center px-6 py-12">
+        <div className="w-full max-w-[400px] bg-[#111111] border border-[#1f1f1f] rounded-sm p-10">
+          {/* Header */}
+          <p className="font-mono text-[0.64rem] tracking-[0.18em] uppercase text-sky-400 mb-1">
+            {isLoginForm ? "// auth" : "// register"}
+          </p>
+          <h2 className="text-[1.4rem] font-medium tracking-tight text-neutral-100">
             {isLoginForm ? "Welcome back" : "Create account"}
           </h2>
-
-          <p className="text-sm text-gray-400 mb-8">
+          <p className="mt-1 text-[0.75rem] text-neutral-500 font-light">
             {isLoginForm
               ? "Enter your credentials to continue"
               : "Fill the details to get started"}
           </p>
 
-          <div className="space-y-5">
+          {/* Fields */}
+          <div className="mt-7 flex flex-col gap-3">
             {!isLoginForm && (
-              <div className="flex gap-4">
+              <div className="flex gap-3">
                 <input
                   type="text"
                   value={firstName}
-                  placeholder="First name"
+                  placeholder="first_name"
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="w-1/2 bg-[#0f172a] border border-[#1f2937] rounded-lg px-3 py-3 text-sm focus:outline-none focus:border-sky-500 transition"
+                  className={inputClass}
                 />
-
                 <input
                   type="text"
                   value={lastName}
-                  placeholder="Last name"
+                  placeholder="last_name"
                   onChange={(e) => setLastName(e.target.value)}
-                  className="w-1/2 bg-[#0f172a] border border-[#1f2937] rounded-lg px-3 py-3 text-sm focus:outline-none focus:border-sky-500 transition"
+                  className={inputClass}
                 />
               </div>
             )}
@@ -130,36 +148,39 @@ const Login = () => {
             <input
               type="text"
               value={emailId}
-              placeholder="Email address"
+              placeholder="email_address"
               onChange={(e) => setEmailId(e.target.value)}
-              className="w-full bg-[#0f172a] border border-[#1f2937] rounded-lg px-3 py-3 text-sm focus:outline-none focus:border-sky-500 transition"
+              className={inputClass}
             />
 
             <input
               type="password"
               value={password}
-              placeholder="Password"
+              placeholder="password"
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#0f172a] border border-[#1f2937] rounded-lg px-3 py-3 text-sm focus:outline-none focus:border-sky-500 transition"
+              className={inputClass}
             />
           </div>
 
+          {/* Error */}
           {error && (
-            <div className="mt-4 text-sm text-red-400 bg-red-900/20 border border-red-500/30 px-3 py-2 rounded-lg">
+            <div className="mt-4 px-3 py-2 bg-[#1a0808] border border-[#2e1010] border-l-[3px] border-l-red-500 rounded-sm font-mono text-[0.71rem] text-red-400">
               {error}
             </div>
           )}
 
+          {/* Submit */}
           <button
             onClick={isLoginForm ? handleLogin : handleSignUp}
-            className="w-full mt-8 bg-sky-600 hover:bg-sky-500 transition text-white py-3 rounded-lg text-sm font-medium"
+            className="w-full mt-6 bg-sky-400 hover:bg-sky-300 active:scale-[0.99] transition-all duration-150 text-black font-mono font-semibold text-[0.72rem] tracking-[0.1em] uppercase py-2.5 rounded-sm cursor-pointer"
           >
             {isLoginForm ? "Sign In" : "Create Account"}
           </button>
 
+          {/* Toggle */}
           <p
-            className="text-center text-sm text-gray-400 mt-6 cursor-pointer hover:text-sky-400 transition"
-            onClick={() => setIsLoginForm((value) => !value)}
+            className="mt-5 text-center font-mono text-[0.71rem] text-neutral-600 hover:text-sky-400 cursor-pointer transition-colors duration-150 select-none"
+            onClick={() => setIsLoginForm((v) => !v)}
           >
             {isLoginForm
               ? "New here? Create an account"
